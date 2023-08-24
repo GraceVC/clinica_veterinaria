@@ -8,13 +8,7 @@
       "nameOwner": "Robinson",
       "email": "robinson@gmail.com",
       "symptoms": "Vómito",
-      "datePet": [
-        {
-          "dateEntry": "2023-08-23",
-          "dateLeaving" : "2023-08-23",
-          "observations": "Médicado con desparacitantes"
-        }
-      ],
+      "datePet": "2023-08-23",
       "uniqueCode": "milopet1",
       "error": false
     }
