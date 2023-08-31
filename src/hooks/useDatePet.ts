@@ -1,50 +1,26 @@
-import { useState } from "react";
-import { Pet } from "../types";
-import { toast } from "react-toastify";
+// Importando el módulo "Sequelize" desde la librería "sequelize"
+import { Sequelize } from "sequelize";
 
-export const useDatePet = () => {
-  const [listPet, setListPet] = useState<Pet[]>([]);
-  const [editDate, setEditDate] = useState<Pet>({} as Pet);
+// Creando una nueva instancia de Sequelize para la conexión a la base de datos
+const sequelize = new Sequelize("db_pets", "postgres", "admin", {
+  host: "localhost", // Host de la base de datos
+  dialect: "postgres", // Tipo de base de datos (PostgreSQL en este caso)
+});
 
-  const registerPet = (newPet: Pet): void => {
-    setListPet([...listPet, newPet]);
-    toast.success("Registrado correctamente", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-  const editDatePet = (pet: Pet) => {
-    const newDatePet = listPet.map((item) =>
-      item.id === editDate.id ? pet : item
-    );
-    setListPet(newDatePet);
-    toast.info("Actualizado correctamente", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
+// Definiendo una función asincrónica "conexion" para establecer la conexión y sincronización con la base de datos
+const conexion = async () => {
+  try {
+    // Intentando autenticarse en la base de datos
+    await sequelize.authenticate();
 
-  const deleteDatePet = (id: string) => {
-    const deletePet = listPet.filter((item) => item.id !== id);
-    setListPet(deletePet);
-  };
+    // Intentando sincronizar los modelos con la base de datos
+    await sequelize.sync();
 
-  return {
-    registerPet,
-    listPet,
-    editDate,
-    setEditDate,
-    editDatePet,
-    deleteDatePet,
-  };
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
 };
+
+// Exportando la función "conexion" y la instancia de Sequelize "sequelize" para ser utilizadas en otros archivos
+export { conexion, sequelize };
